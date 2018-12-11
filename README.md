@@ -1,4 +1,4 @@
-# Service Mesh Patters Workshop (snowcamp.io)
+# Service Mesh Patterns Workshop (snowcamp.io)
 
 Please go through the instructions below to create a Kubernetes cluster with Istio installed. Alternatively, you can use any other cloud providers Kubernetes cluster offering. 
 
