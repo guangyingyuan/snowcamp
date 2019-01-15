@@ -164,7 +164,7 @@ Download the executable from [here](https://github.com/istio/istio/releases/down
 ##### Verify the installation 
 Run `istioctl version` and check that you get an output similar to this:
 ```bash
-Version: 1.0.3
+Version: 1.0.5
 GitRevision: a44d4c8bcb427db16ca4a439adfbd8d9361b8ed3
 User: root@0ead81bba27d
 Hub: docker.io/istio
@@ -174,7 +174,7 @@ BuildStatus: Clean
 
 #### Install Istio on the cluster
 
-1. Open the `istio-1.0.3` folder in your terminal/console.
+1. Open the `istio-1.0.5` folder in your terminal/console.
 1. Install Istio custom resource definitions and wait for about a minute or so for the CRDs to get applied.
     ```bash
     kubectl apply -f install/kubernetes/helm/istio/templates/crds.yaml
