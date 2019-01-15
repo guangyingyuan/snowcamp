@@ -92,15 +92,14 @@ Client Version: version.Info{Major:"1", Minor:"10", GitVersion:"v1.10.0", GitCom
 With all prerequisites installed, it's time to start Minikube. Open the terminal/console window and type in the following command to start Minikube:
 
 ```bash
-minikube start --memory=8192 --cpus=4 --kubernetes-version=v1.10.0 \
-    --vm-driver="virtualbox"
+minikube start --memory=8192 --cpus=4 --vm-driver="virtualbox"
 ```
 >Note: the above command might take some time as it will download the Minikube ISO and install/start everything needed to run Kubernetes.
 
 The output from the start command should look something like this:
 ```bash
-$ minikube start --memory=8192 --cpus=4 --kubernetes-version=v1.10.0
-Starting local Kubernetes v1.10.0 cluster...
+$ minikube start --memory=8192 --cpus=4
+Starting local Kubernetes v1.12.4 cluster...
 Starting VM...
 Getting VM IP address...
 Moving files into cluster...
@@ -135,6 +134,7 @@ A couple of useful Minikube commands:
 - `minikube delete` - deletes the Kubernetes cluster, everything running in your cluster will be lost. Run this command if you want to start from a clean, empty cluster
 - `minikube stop` - stops the Kubernetes cluster
 - `minikube dashboard` - opens the Kubernetes dashboard in the browser
+- `minikube tunnel` - creates a tunnel, so you can access Services with LoadBalancer type by their actual IPs
 
 
 ### Download and install Istio
@@ -149,9 +149,9 @@ curl -L https://git.io/getLatestIstio | sh -
 ```
 >Warning: never blindly pipe any scripts to the shell. Always check the contents of the script before doing this.
 
-The above script will download and extract the contents to the `istio-1.0.3` folder. This folder contains the installation files for Kubernetes, samples and the `istioctl` binary.
+The above script will download and extract the contents to the `istio-1.0.5` folder. This folder contains the installation files for Kubernetes, samples and the `istioctl` binary.
 
-Let's start by creating a symbolic link for `istioctl` (alternatively, you can copy the binary to `/usr/local/bin`). Open the `/istio-1.0.3/bin` folder in your terminal/console and run:
+Let's start by creating a symbolic link for `istioctl` (alternatively, you can copy the binary to `/usr/local/bin`). Open the `/istio-1.0.5/bin` folder in your terminal/console and run:
 
 ```bash
 ln -s $PWD/istioctl /usr/local/bin/istioctl
