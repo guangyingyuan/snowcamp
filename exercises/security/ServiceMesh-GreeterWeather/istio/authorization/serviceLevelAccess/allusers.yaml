@@ -1,0 +1,25 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: weather-viewer
+  namespace: default
+spec:
+  rules:
+  - services: ["weather-proxy-service.default.svc.cluster.local"]
+    methods: ["GET"]
+
+---
+
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: weather-viewer-binding
+  namespace: default
+spec:
+  subjects:
+  - user: "*"
+  roleRef:
+    kind: ServiceRole
+    name: "weather-viewer"
+
+

@@ -1,0 +1,9 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: weatherproxy-istio-mtls
+spec:
+  host: weather-proxy-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL

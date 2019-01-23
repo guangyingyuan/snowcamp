@@ -1,0 +1,43 @@
+kind: Service
+apiVersion: v1
+metadata:
+    name: weather-proxy-service
+    namespace: default
+    labels:
+        app: weather-proxy
+        version: v1
+spec:
+    selector:
+        app: weather-proxy
+    ports:
+        - port: 3100 
+          targetPort: 3100
+          name: http
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: weather-proxy-service-v1
+    labels:
+        app: weather-proxy
+        version: v1
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: weather-proxy
+                version: v1
+        spec:
+            containers:
+                - image: skzern/weatherproxy:2.0.10
+                  imagePullPolicy: Always
+                  name: weatherproxy
+                  ports:
+                      - containerPort: 3100
+                  env: 
+                     - name: hostURL
+                       value: "https://api.openweathermap.org/data/2.5/weather"
+                     - name: apiKey
+                       value: "cdb1ed01e720777a25d7caf4719876ef"

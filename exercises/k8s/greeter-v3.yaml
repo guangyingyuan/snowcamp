@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: greeter-service-v3
+    labels:
+        app: greeter-service
+        version: v3
+spec:
+    replicas: 3
+    template:
+        metadata:
+            labels:
+                app: greeter-service
+                version: v3
+        spec:
+            containers:
+                - image: learnistio/greeter-service:3.0.0
+                  imagePullPolicy: Always
+                  name: svc
+                  ports:
+                      - containerPort: 3000
