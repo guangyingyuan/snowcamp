@@ -3,8 +3,8 @@
 Deploy the two services to the K8S cluster.
 
 ```bash
-kubectl apply -f generalHello/src/main/k8s/greeter-weather-svc.yaml
-kubectl apply -f weather/src/main/k8s/weather-proxy-svc.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/k8s/greeter-weather-svc.yaml
+kubectl apply -f WeatherProxy/k8s/weather-proxy-svc.yaml
 ```
 
 The yaml files create the Service and Deployment resources in the Kubernetes environment. To verify that the services are deployed and running:
@@ -23,25 +23,25 @@ Before the services are accessible you need to deploy some Istio resources; the 
 Creates the ingress gateway that will front our services
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/greeter-weather-gateway.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/greeter-weather-gateway.yaml
 ```
 
 Creates the Istio resource of kind virtualservice
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/greeter-weather-virtualservice.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/greeter-weather-virtualservice.yaml
 ```
 
 Creates the Istio resource of kind DestinationRule
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/dest-rule
+kubectl apply -f ServiceMesh-GreeterWeather/istio/dest-rule
 ```
 
 Creates an egress gateway. This allows services that are external to the service mesh be accessible. Services that are external to the service mesh are not known to the Envoy proxies; therefore, when a request is made from the service the Envoy will not know how to route to the requested endpoint. The ServiceEntry places an entry in the IPTable. The proxy will then know how to route the request to the external endpoint.
 
 ```bash
-$ kubectl apply -f generalHello/src/main/istio/weather-serviceEntry.yaml
+$ kubectl apply -f ServiceMesh-GreeterWeather/istio/weather-serviceEntry.yaml
 ```
 
 Let’s verify that all resources are created, deployed, and operational.
@@ -89,7 +89,7 @@ To enable mTLS authentication we will use the default service accounts for the a
 Enable mTLS between the two services.
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/mtls-to-weatherproxy.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/mtls-to-weatherproxy.yaml
 ```
 
 Setup mTLS from the greeter-weather to the weather-proxy service. This informs the client-side proxy to initiate a mTLS communication with the server-side proxy.
@@ -97,7 +97,7 @@ Setup mTLS from the greeter-weather to the weather-proxy service. This informs t
 Invoking the uri `/weather/92022/units/imperial` will result in a 503 error. The reason being you have only set up one side of the communication. The server-side proxy needs to be configured with a DestinationRule that sets a trafficPolicy for tls.
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/mtls-to-weatherproxy-destrule.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/mtls-to-weatherproxy-destrule.yaml
 ```
 
 Exercising the request again will result in a valid response from the weather-proxy service.
@@ -111,19 +111,19 @@ For this exercise to demonstrate authorization we will use the Kubernetes servic
 First, let’s remove the Services and Deployments that were done previously.
 
 ```bash
-kubectl delete -f generalHello/src/main/k8s/greeter-weather-svc.yaml
-kubectl delete -f generalHello/src/main/istio/greeter-weather-virtualservice.yaml
-kubectl delete -f generalHello/src/main/istio/dest-rule.yaml
-kubectl delete -f weather/src/main/k8s/weather-proxy-svc.yaml
+kubectl delete -f ServiceMesh-GreeterWeather/k8s/greeter-weather-svc.yaml
+kubectl delete -f ServiceMesh-GreeterWeather/istio/greeter-weather-virtualservice.yaml
+kubectl delete -f ServiceMesh-GreeterWeather/istio/dest-rule.yaml
+kubectl delete -f WeatherProxy/k8s/weather-proxy-svc.yaml
 ```
 
 Deploy the services, but they will now be deployed with ServiceAccounts and into different namespaces.
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/authorization/greeter-weather-svc-sa.yaml
-kubectl apply -f generalHello/src/main/istio/authorization/greeter-weather-virtualservice.yaml
-kubectl apply -f generalHello/src/main/istio/authorization/dest-rule.yaml
-kubectl apply -f weather/src/main/istio/authorization/weather-proxy-svc-sa.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/authorization/greeter-weather-svc-sa.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/authorization/greeter-weather-virtualservice.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/authorization/dest-rule.yaml
+kubectl apply -f WeatherProxy/istio/authorization/weather-proxy-svc-sa.yaml
 
 kubectl get sa
 kubectl get sa -n greet-ns
@@ -136,7 +136,7 @@ Get a successful response
 Enable authorization by deploying a new resource RbacConfig.
 
 ```
-kubectl apply -f generalHello/src/main/istio/authorization/rbac-config-enable.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/authorization/rbac-config-enable.yaml
 ```
 
 Execute the same previous curl command and this time the request will fail.
@@ -146,7 +146,7 @@ Execute the same previous curl command and this time the request will fail.
 Take a look at the yaml file to make sure you understand what is being configured.
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/authorization/namespaceAuth/greeter-weather-namespace-policy.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/authorization/namespaceAuth/greeter-weather-namespace-policy.yaml
 ```
 
 The defined ServiceRole specifies the following – each must be satisfied:
@@ -167,13 +167,13 @@ curl http://<gateway-ip>/weather/92022/units/imperial
 Let’s remove the namespace authorization and then use authorization for a specific service and by a specific user and the all users.
 
 ```bash
-kubectl delete -f generalHello/src/main/istio/authorization/namespaceAuth/greeter-weather-namespace-policy.yaml
+kubectl delete -f ServiceMesh-GreeterWeather/istio/authorization/namespaceAuth/greeter-weather-namespace-policy.yaml
 ```
 
 Apply the authorization by a specific user:
 
 ```bash
-kubectl apply -f generalHello/src/main/istio/authorization/serviceLevelAccess/specificuser.yaml
+kubectl apply -f ServiceMesh-GreeterWeather/istio/authorization/serviceLevelAccess/specificuser.yaml
 ```
 
 Review the yaml file to determine who the actual user is that is making the request. Where did this user come from?
