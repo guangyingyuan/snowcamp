@@ -21,7 +21,7 @@ spec:
                       - containerPort: 3000
                   env:
                       - name: THEMOVIEDB_API_KEY
-                        value: '<API KEY HERE>'
+                        value: '17b8d9b6c61c9aec328d1041f7a617e9'
 ---
 kind: Service
 apiVersion: v1

@@ -11,11 +11,4 @@ spec:
                     host: greeter-service
                     port:
                         number: 3000
-                    subset: v1
-                weight: 100
-              - destination:
-                    host: greeter-service
-                    port:
-                        number: 3000
-                    subset: v2
-                weight: 0
+          timeout: 1s

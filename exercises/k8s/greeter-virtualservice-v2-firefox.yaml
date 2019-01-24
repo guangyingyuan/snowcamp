@@ -8,14 +8,24 @@ spec:
     http:
         - match:
               - headers:
-                    user-agent:
-                        regex: '.*Firefox.*'
+                    x-user:
+                        regex: '.*alpha.*'
           route:
               - destination:
                     host: greeter-service
                     port:
                         number: 3000
-                    subset: v2
+                    subset: v3
+        - match:
+              - headers:
+                    x-user:
+                        regex: '.*beta.*'
+          route:
+              - destination:
+                    host: greeter-service
+                    port:
+                        number: 3000
+                    subset: v
         - route:
               - destination:
                     host: greeter-service
