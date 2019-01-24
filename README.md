@@ -2,6 +2,8 @@
 
 Please go through the instructions below to create a Kubernetes cluster with Istio installed. Alternatively, you can use any other cloud providers Kubernetes cluster offering. 
 
+If you're having issues installing Minikube and getting it to work, you should try Docker for Mac/Windows instead.
+
 ## Setup Minikube with Istio
 
 These instructions will help you set up and run a Kubernetes cluster using Minikube on your computer. When that's set up, we will download and install Istio on that cluster and at the end of this walkthrough, you will have a working Kubernetes cluster with Istio running on it.
